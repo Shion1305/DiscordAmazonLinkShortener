@@ -62,9 +62,13 @@ type AmazonUrlInfo struct {
 
 func amazonLinkVerifier(link string) *AmazonUrlInfo {
 	r, _ := regexp.Compile(`^https://www\.amazon\.co\.jp/[^ ]+/dp/(?P<id>[A-Za-z\d]+).*$`)
-	result := r.FindString(link)
-	fmt.Println("result: ", result)
-	if result == "" {
+	r1, _ := regexp.Compile(`^https://www\.amazon\.co\.jp/dp/(?P<id>[A-Za-z\d]+).*$`)
+	var outLink string
+	if r.FindString(link) != "" {
+		outLink = r.ReplaceAllString(link, "https://www.amazon.co.jp/dp/${id}")
+	} else if r1.FindString(link) != "" {
+		outLink = r1.ReplaceAllString(link, "https://www.amazon.co.jp/dp/${id}")
+	} else {
 		return nil
 	}
 	outLink := r.ReplaceAllString(link, "https://www.amazon.co.jp/dp/${id}")
