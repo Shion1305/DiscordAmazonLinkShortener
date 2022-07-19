@@ -31,7 +31,6 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	d := amazonLinkVerifier(m.Content)
-	fmt.Println(d)
 	if d == nil {
 		return
 	}
@@ -71,9 +70,7 @@ func amazonLinkVerifier(link string) *AmazonUrlInfo {
 	} else {
 		return nil
 	}
-	outLink := r.ReplaceAllString(link, "https://www.amazon.co.jp/dp/${id}")
 	title := getOGP(outLink)
-	fmt.Println("OutLink: ", outLink)
 	return &AmazonUrlInfo{title, outLink}
 }
 
@@ -88,7 +85,6 @@ func getOGP(link string) string {
 	var title string
 	if t, ok := GetHtmlTitle(resp.Body); ok {
 		title = t
-		fmt.Println(title)
 	} else {
 		println("Fail to get HTML title")
 	}
