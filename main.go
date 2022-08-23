@@ -54,24 +54,23 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-type AmazonUrlInfo struct {
+type linkInfo struct {
 	Title string
 	Url   string
 }
 
-func amazonLinkVerifier(link string) *AmazonUrlInfo {
-	r, _ := regexp.Compile(`^https://www\.amazon\.co\.jp/[^ ]+/dp/(?P<id>[A-Za-z\d]+).*$`)
-	r1, _ := regexp.Compile(`^https://www\.amazon\.co\.jp/dp/(?P<id>[A-Za-z\d]+).*$`)
-	var outLink string
-	if r.FindString(link) != "" {
-		outLink = r.ReplaceAllString(link, "https://www.amazon.co.jp/dp/${id}")
-	} else if r1.FindString(link) != "" {
-		outLink = r1.ReplaceAllString(link, "https://www.amazon.co.jp/dp/${id}")
-	} else {
+func amazonLinkVerifier(link string) *linkInfo {
+	r := regexp.MustCompile(`^https://www\.amazon\.co\.jp/?([^　 ])*/dp/(?P<id>[A-Z\d]{10})`)
+	//second parameter of FindAllStringSubmatch is the maximum size of result
+	result := r.FindAllStringSubmatch(link, 1)
+	if len(result) <= 0 {
 		return nil
 	}
+	outLink := "https://www.amazon.co.jp/dp/"
+	outLink = result[0][1] + outLink
+
 	title := getOGP(outLink)
-	return &AmazonUrlInfo{title, outLink}
+	return &linkInfo{title, outLink}
 }
 
 func getOGP(link string) string {
