@@ -60,15 +60,14 @@ type linkInfo struct {
 }
 
 func amazonLinkVerifier(link string) *linkInfo {
-	r := regexp.MustCompile(`^https://www\.amazon\.co\.jp/?([^　 ])*/dp/(?P<id>[A-Z\d]{10})`)
+	r := regexp.MustCompile(`^https://www\.amazon\.co\.jp/?[^　 ]*/dp/(?P<id>[A-Z\d]{10})`)
 	//second parameter of FindAllStringSubmatch is the maximum size of result
 	result := r.FindAllStringSubmatch(link, 1)
 	if len(result) <= 0 {
 		return nil
 	}
 	outLink := "https://www.amazon.co.jp/dp/"
-	outLink = result[0][1] + outLink
-
+	outLink += result[0][1]
 	title := getOGP(outLink)
 	return &linkInfo{title, outLink}
 }
