@@ -9,19 +9,12 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path"
 	"regexp"
 	"syscall"
 )
 
 func main() {
-	ex, err := os.Executable()
-	if err != nil {
-		fmt.Println("Error collecting executable path")
-		panic(err)
-	}
-	err = godotenv.Load(path.Dir(ex) + "/.env")
-	if err != nil {
+	if err := godotenv.Load(); err != nil {
 		fmt.Println("Error loading .env file")
 		panic(err)
 	}
