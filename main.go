@@ -18,8 +18,11 @@ func main() {
 	_ = godotenv.Load()
 
 	dg, err := discordgo.New("Bot " + os.Getenv("DISCORD_TOKEN"))
-	err = dg.Open()
 	if err != nil {
+		fmt.Println("error creating Discord session,", err)
+		return
+	}
+	if err := dg.Open(); err != nil {
 		fmt.Println("error creating Discord session,", err)
 	}
 	dg.AddHandler(onMessageCreate)
