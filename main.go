@@ -2,22 +2,21 @@ package main
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
-	"github.com/joho/godotenv"
-	"golang.org/x/net/html"
 	"io"
 	"net/http"
 	"os"
 	"os/signal"
 	"regexp"
 	"syscall"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/joho/godotenv"
+	"golang.org/x/net/html"
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		fmt.Println("Error loading .env file")
-		panic(err)
-	}
+	_ = godotenv.Load()
+
 	dg, err := discordgo.New("Bot " + os.Getenv("DISCORD_TOKEN"))
 	err = dg.Open()
 	if err != nil {
