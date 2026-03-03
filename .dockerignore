@@ -1,0 +1,32 @@
+# Git files
+.git
+.gitignore
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+.idea
+.vscode
+*.swp
+*.swo
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Documentation
+README.md
+LICENSE
+
+# CI/CD
+.github
